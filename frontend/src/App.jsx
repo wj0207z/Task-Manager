@@ -1,15 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-function Tasks() {
-  return (
-    <main>
-      <h1>Tasks Page</h1>
-      <p>Login success. We will build this page next.</p>
-    </main>
-  );
-}
+import Tasks from "./pages/Tasks";
 
 function App() {
   return (
