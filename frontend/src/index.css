@@ -253,6 +253,57 @@ textarea {
   margin-bottom: 18px;
 }
 
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  background: white;
+  padding: 14px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+}
+
+.stat-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 26px;
+}
+
+.stat-card.warning strong {
+  color: #b91c1c;
+}
+
+.logout-button {
+  width: auto;
+  background: #111827;
+  color: white;
+}
+
+.logout-button:hover {
+  background: #374151;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 720px) {
   .task-filters {
     grid-template-columns: 1fr;

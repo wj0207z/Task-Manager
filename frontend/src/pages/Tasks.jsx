@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
 function Tasks() {
+
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const [tasks, setTasks] = useState([]);
 
     const [form, setForm] = useState({
@@ -138,6 +143,31 @@ function Tasks() {
         });
     }
 
+    const today = new Date().toISOString().slice(0, 10);
+
+    const totalTasks = tasks.length;
+
+    const pendingTasks = tasks.filter((task) => task.status === "pending").length;
+
+    const inProgressTasks = tasks.filter(
+        (task) => task.status === "in_progress"
+    ).length;
+
+    const completedTasks = tasks.filter(
+        (task) => task.status === "completed"
+    ).length;
+
+    const highPriorityTasks = tasks.filter(
+        (task) => task.priority === "high"
+    ).length;
+
+    const overdueTasks = tasks.filter(
+        (task) =>
+            task.due_date &&
+            task.due_date < today &&
+            task.status !== "completed"
+    ).length;
+
     const filteredTasks = tasks.filter((task) => {
         const searchText = search.toLowerCase();
 
@@ -153,6 +183,19 @@ function Tasks() {
 
         return matchesSearch && matchesStatus && matchesPriority;
     });
+
+    async function handleLogout() {
+        try {
+            await api.post("/logout");
+        } catch (error) {
+            console.log("Logout request failed, clearing local data anyway.");
+        }
+    
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+    
+        navigate("/login");
+    }
 
     useEffect(() => {
         fetchTasks();
@@ -170,8 +213,52 @@ function Tasks() {
         <main className="page">
         <div className="page-header">
             <div>
-            <h1>My Tasks</h1>
-            <p>Create and manage your personal tasks.</p>
+                <h1>My Tasks</h1>
+                <p>
+                {user
+                    ? `Logged in as ${user.name}`
+                    : "Create and manage your personal tasks."}
+                </p>
+            </div>
+
+            <button
+                className="logout-button"
+                type="button"
+                onClick={handleLogout}
+            >
+                Logout
+            </button>
+        </div>
+
+        <div className="dashboard-grid">
+            <div className="stat-card">
+                <span>Total</span>
+                <strong>{totalTasks}</strong>
+            </div>
+
+            <div className="stat-card">
+                <span>Pending</span>
+                <strong>{pendingTasks}</strong>
+            </div>
+
+            <div className="stat-card">
+                <span>In Progress</span>
+                <strong>{inProgressTasks}</strong>
+            </div>
+
+            <div className="stat-card">
+                <span>Completed</span>
+                <strong>{completedTasks}</strong>
+            </div>
+
+            <div className="stat-card">
+                <span>High Priority</span>
+                <strong>{highPriorityTasks}</strong>
+            </div>
+
+            <div className="stat-card warning">
+                <span>Overdue</span>
+                <strong>{overdueTasks}</strong>
             </div>
         </div>
 

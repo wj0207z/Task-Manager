@@ -22,8 +22,8 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'nullable|string',
-            'priority' => 'nullable|string',
+            'status' => 'nullable|in:pending,in_progress,completed',
+            'priority' => 'nullable|in:low,normal,high',
             'due_date' => 'nullable|date',
         ]);
 
@@ -60,8 +60,8 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'sometimes|string',
-            'priority' => 'sometimes|string',
+            'status' => 'sometimes|in:pending,in_progress,completed',
+            'priority' => 'sometimes|in:low,normal,high',
             'due_date' => 'nullable|date',
         ]);
 
